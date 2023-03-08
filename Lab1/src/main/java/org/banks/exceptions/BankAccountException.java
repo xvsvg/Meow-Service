@@ -1,5 +1,8 @@
 package org.banks.exceptions;
 
+/**
+ * {@inheritDoc}
+ */
 public class BankAccountException extends BankApplicationException {
 
     private BankAccountException() {
@@ -18,10 +21,20 @@ public class BankAccountException extends BankApplicationException {
         super(cause);
     }
 
+    /**
+     * Rate amount is invalid
+     * @param message details
+     * @return BankAccountException instance
+     */
     public static BankAccountException NegativeRateAmountException(String message) {
         return new BankAccountException(message);
     }
 
+    /**
+     * Charges amount is invalid
+     * @param message details
+     * @return BankAccountException instance
+     */
     public static BankAccountException NegativeChargesAmountException(String message) {
         return new BankAccountException(message);
     }

@@ -1,5 +1,8 @@
 package org.banks.exceptions;
 
+/**
+ * {@inheritDoc}
+ */
 public class AccountOperationException extends BankApplicationException{
     private AccountOperationException() {
         super();
@@ -17,6 +20,11 @@ public class AccountOperationException extends BankApplicationException{
         super(cause);
     }
 
+    /**
+     * Account is suspicious, so operation cannot be executed
+     * @param message details
+     * @return AccountOperationException instance
+     */
     public static AccountOperationException AccountIsSuspiciousException(String message){
         return new AccountOperationException(message);
     }

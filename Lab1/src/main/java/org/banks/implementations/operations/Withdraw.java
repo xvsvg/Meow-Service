@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+ * {@inheritDoc}
+ */
 public class Withdraw extends AccountOperation {
 
     @Getter
@@ -16,6 +19,11 @@ public class Withdraw extends AccountOperation {
     @Getter
     private final double total;
 
+    /**
+     * Constructs withdraw instance
+     * @param account account to which withdraw will be applied
+     * @param total money to be withdrawn
+     */
     public Withdraw(BankAccount account, double total) {
 
         this.account = account;

@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+ * {@inheritDoc}
+ */
 public class MakeDeposit extends AccountOperation {
 
     @Getter
@@ -17,6 +20,11 @@ public class MakeDeposit extends AccountOperation {
     @Getter
     private final double total;
 
+    /**
+     * Constructs deposit instance
+     * @param account account to which money will be deposited
+     * @param total amount of money
+     */
     public MakeDeposit(BankAccount account, double total){
 
         this.account = account;

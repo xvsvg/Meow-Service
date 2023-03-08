@@ -20,25 +20,49 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+/**
+ * Represents bank
+ */
 public class Bank {
     private final HashMap<Client, LinkedList<BankAccountInfo>> accounts;
 
+    /**
+     * Returns central bank to which bank assigned
+     */
     @Getter
     private final CentralBank centralBank;
 
+    /**
+     * Returns bank configuration
+     *
+     * @see org.banks.implementations.banks.tools.BankConfiguration
+     */
     @Getter
     private final BankConfiguration bankConfiguration;
 
+    /**
+     * Returns bank id
+     */
     @Getter
     private final UUID id;
 
+    /**
+     * Returns daily event handler
+     */
     @Getter
     private final Observer<Bank> dayChangeHandler;
 
+    /**
+     * Returns monthly event handler
+     */
     @Getter
     private final Observer<Bank> monthChangeHandler;
 
+    /**
+     * Construct bank instance
+     * @param centralBank central bank in which bank will be registered
+     * @param bankConfiguration configuration of a bank
+     */
     public Bank(CentralBank centralBank, BankConfiguration bankConfiguration) {
 
         this.centralBank = centralBank;
@@ -92,25 +116,42 @@ public class Bank {
         };
     }
 
-
+    /**
+     * @return Common interest rate
+     */
     public double getInterestRate() {
         return this.bankConfiguration.getCommonInterestRate();
     }
 
+    /**
+     * @return Common charge rate
+     */
     public double getChargeRate() {
         return this.bankConfiguration.getCommonInterestRate();
     }
 
+    /**
+     * @return Bunch of clients registered in a bank
+     */
     public Collection<Client> getClients() {
         return Collections.unmodifiableSet(this.accounts.keySet());
     }
 
+    /**
+     * @return Bunch of accounts registered in a bank
+     */
     public Collection<BankAccountInfo> getAccounts() {
         return this.accounts.values().stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    /**
+     * Registers bank account
+     *
+     * @param account account to be registered
+     * @return registered bank account
+     */
     public BankAccount addBankAccount(BankAccount account) {
         if (this.accounts.containsKey(account.getClient())) {
             var list = this.accounts.get(account.getClient());
@@ -127,12 +168,23 @@ public class Bank {
         return account;
     }
 
+    /**
+     * Removes bank account from registered ones
+     *
+     * @param account account to be removed
+     */
     public void removeBankAccount(BankAccount account) {
         var list = this.accounts.get(account.getClient());
         list.remove(account);
         this.accounts.put(account.getClient(), list);
     }
 
+    /**
+     * Finds client bank accounts in a bank
+     *
+     * @param id id of a client, whose bank accounts need to be found
+     * @return Bunch of client accounts
+     */
     public Collection<BankAccountInfo> findBankAccount(ClientId id) {
         return this.accounts.entrySet().stream()
                 .filter(a -> a.getKey().getId() != null && a.getKey().getId().getIdNumber() == id.getIdNumber())
@@ -140,6 +192,11 @@ public class Bank {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Performs transaction
+     *
+     * @param operation operation, that should be executed
+     */
     public void makeTransaction(AccountOperation operation) {
         operation.evaluate();
 
@@ -152,6 +209,12 @@ public class Bank {
         }
     }
 
+    /**
+     * Resets effect of performed transaction
+     *
+     * @param receipt receipt of existing transaction
+     * @throws ReceiptException iff you're trying to reset folded operation
+     */
     public void foldTransaction(Receipt receipt) throws ReceiptException {
         if (receipt.isCancelled()) {
             throw ReceiptException.unableToFoldTransaction();
@@ -161,6 +224,12 @@ public class Bank {
         receipt.setCancelled(false);
     }
 
+    /**
+     * Updates account history
+     *
+     * @param account   account, that history will be updated
+     * @param operation operation, that made using the account
+     */
     private void updateAccountHistory(BankAccount account, AccountOperation operation) {
         account.addToHistory(new AccountOperationReceipt(
                 operation.getTotal(),
@@ -169,7 +238,10 @@ public class Bank {
                 operation.getOrders()));
     }
 
-    public void calculateInterest() {
+    /**
+     * Estimates interest for all accounts
+     */
+    private void calculateInterest() {
         this.accounts.values().stream()
                 .flatMap(Collection::stream)
                 .filter(acc -> !(acc.account() instanceof CreditAccount))
@@ -181,7 +253,10 @@ public class Bank {
                 });
     }
 
-    public void calculateFee() {
+    /**
+     * Estimates fee for all accounts
+     */
+    private void calculateFee() {
         this.accounts.values().stream()
                 .flatMap(Collection::stream)
                 .filter(acc -> acc.account() instanceof CreditAccount && acc.account().getMoney() < 0)
@@ -189,7 +264,10 @@ public class Bank {
                         + Math.round((acc.account().getChargeRate() / 365 / 100) * Math.abs(acc.account().getMoney()) * 100.0) / 100.0));
     }
 
-    public void accrueInterest() {
+    /**
+     * Accrues estimated interest for all accounts
+     */
+    private void accrueInterest() {
         this.accounts.values().stream()
                 .flatMap(Collection::stream)
                 .filter(acc -> !(acc.account() instanceof CreditAccount))
@@ -199,7 +277,10 @@ public class Bank {
                 });
     }
 
-    public void chargeFee() {
+    /**
+     * Charges estimated charges for all accounts
+     */
+    private void chargeFee() {
         this.accounts.values().stream()
                 .flatMap(Collection::stream)
                 .filter(acc -> acc.account() instanceof CreditAccount)

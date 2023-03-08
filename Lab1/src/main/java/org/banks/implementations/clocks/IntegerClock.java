@@ -4,6 +4,9 @@ import io.reactivex.rxjava3.core.Observable;
 import org.banks.implementations.banks.CentralBank;
 import org.banks.contracts.clocks.Runnable;
 
+/**
+ * {@inheritDoc}
+ */
 public class IntegerClock implements Runnable {
 
     private int timeOffset;
@@ -11,6 +14,12 @@ public class IntegerClock implements Runnable {
     private final int timeToWait;
     private final int notifyFrequency;
 
+    /**
+     * Constructs integer clock instance
+     * @param bank bank, that clock created for
+     * @param timeBetweenTicksInMilleseconds time between ticks in milleseconds
+     * @param notifyFrequency time between months in milleseconds
+     */
     public IntegerClock(CentralBank bank, int timeBetweenTicksInMilleseconds, int notifyFrequency) {
         this.bank = bank;
         this.timeToWait = timeBetweenTicksInMilleseconds;

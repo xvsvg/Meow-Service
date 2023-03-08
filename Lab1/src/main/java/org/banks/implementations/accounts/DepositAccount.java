@@ -7,13 +7,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+/**
+ * {@inheritDoc}
+ */
 public class DepositAccount extends BankAccount {
+
+    /**
+     * {@inheritDoc}
+     */
     public DepositAccount(Bank bank, RussianClient client, double firstDeposit, boolean isOverdraftEnabled, @Nullable Date expirationDate) {
         super(bank, client, firstDeposit, isOverdraftEnabled, expirationDate);
     }
 
     @Override
-    public double getInterestRate(){
+    public double getInterestRate() {
         var depositAmounts = this.getBank().getBankConfiguration().getConfiguration().getDeposits().stream().toList();
         var interestRates = this.getBank().getBankConfiguration().getConfiguration().getDeposits().stream().toList();
 

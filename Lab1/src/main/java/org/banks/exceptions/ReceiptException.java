@@ -1,32 +1,50 @@
 package org.banks.exceptions;
 
-public class ReceiptException extends BankApplicationException{
+/**
+ * {@inheritDoc}
+ */
+public class ReceiptException extends BankApplicationException {
 
-    private ReceiptException(){
+    private ReceiptException() {
         super();
     }
 
-    private ReceiptException(String message){
+    private ReceiptException(String message) {
         super(message);
     }
 
-    private ReceiptException(String message, Throwable cause){
+    private ReceiptException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    private ReceiptException(Throwable cause){
+    private ReceiptException(Throwable cause) {
         super(cause);
     }
 
-    public static ReceiptException NegativeMoneyAmountException(){
+    /**
+     * Invalid money amount
+     *
+     * @return NegativeMoneyAmountException instance
+     */
+    public static ReceiptException NegativeMoneyAmountException() {
         return new ReceiptException();
     }
 
-    public static ReceiptException UnableToChangeStatusException(){
+    /**
+     * Invalid action applied to status
+     *
+     * @return ReceiptException instance
+     */
+    public static ReceiptException UnableToChangeStatusException() {
         return new ReceiptException();
     }
 
-    public static ReceiptException unableToFoldTransaction(){
+    /**
+     * Invalid action applied to transaction
+     *
+     * @return ReceiptException instance
+     */
+    public static ReceiptException unableToFoldTransaction() {
         return new ReceiptException();
     }
 }

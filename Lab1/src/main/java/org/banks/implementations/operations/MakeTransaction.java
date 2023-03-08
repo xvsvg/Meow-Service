@@ -6,6 +6,9 @@ import org.banks.exceptions.AccountOperationException;
 
 import java.util.Collection;
 
+/**
+ * {@inheritDoc}
+ */
 public class MakeTransaction extends AccountOperation {
 
     @Getter
@@ -14,6 +17,11 @@ public class MakeTransaction extends AccountOperation {
     @Getter
     private final double total;
 
+    /**
+     * Constructs transaction instance
+     * @param orders account order in which operation will be applied
+     * @param total money amount
+     */
     public MakeTransaction(Collection<OperationOrder> orders, double total) {
 
         this.orders = orders;

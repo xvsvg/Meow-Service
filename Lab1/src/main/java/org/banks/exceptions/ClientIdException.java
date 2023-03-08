@@ -2,6 +2,9 @@ package org.banks.exceptions;
 
 import org.banks.contracts.clients.Client;
 
+/**
+ * {@inheritDoc}
+ */
 public class ClientIdException extends BankApplicationException{
 
     private ClientIdException() {
@@ -20,6 +23,10 @@ public class ClientIdException extends BankApplicationException{
         super(cause);
     }
 
+    /**
+     * Invalid client id number
+     * @return ClientIdException instance
+     */
     public static ClientIdException InvalidNumber(){
         return new ClientIdException();
     }
