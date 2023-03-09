@@ -1,11 +1,10 @@
 package org.banks.implementations.accounts;
 
 import org.banks.contracts.accounts.BankAccount;
+import org.banks.contracts.clients.Client;
 import org.banks.implementations.banks.Bank;
-import org.banks.implementations.clients.RussianClient;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 /**
  * {@inheritDoc}
@@ -15,7 +14,7 @@ public class DepositAccount extends BankAccount {
     /**
      * {@inheritDoc}
      */
-    public DepositAccount(Bank bank, RussianClient client, double firstDeposit, boolean isOverdraftEnabled, @Nullable Date expirationDate) {
+    public DepositAccount(Bank bank, Client client, double firstDeposit, boolean isOverdraftEnabled, LocalTime expirationDate) {
         super(bank, client, firstDeposit, isOverdraftEnabled, expirationDate);
     }
 
