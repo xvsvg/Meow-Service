@@ -60,7 +60,8 @@ public class Bank {
 
     /**
      * Construct bank instance
-     * @param centralBank central bank in which bank will be registered
+     *
+     * @param centralBank       central bank in which bank will be registered
      * @param bankConfiguration configuration of a bank
      */
     public Bank(CentralBank centralBank, BankConfiguration bankConfiguration) {
@@ -114,6 +115,14 @@ public class Bank {
             public void onSubscribe(Disposable d) {
             }
         };
+    }
+
+    /**
+     * @return Bank name
+     */
+    @Override
+    public String toString() {
+        return bankConfiguration.getName();
     }
 
     /**

@@ -2,6 +2,7 @@ package org.banks.contracts.accounts;
 
 import lombok.Getter;
 
+import java.time.LocalTime;
 import java.util.*;
 
 import lombok.Setter;
@@ -20,7 +21,7 @@ public abstract class BankAccount {
      * @return Account expiration date
      */
     @Getter
-    private Date expirationDate;
+    private LocalTime expirationDate;
 
     /**
      * @return Bank in which account is registered
@@ -74,7 +75,7 @@ public abstract class BankAccount {
             Client client,
             double firstDeposit,
             boolean isOverdraftEnabled,
-            @Nullable Date expirationDate
+            @Nullable LocalTime expirationDate
     ) {
         this.bank = bank;
         this.client = client;
