@@ -12,7 +12,6 @@ repositories {
 dependencies {
     implementation(project(":Lab2:domain"))
     implementation(project(":Lab2:dao"))
-    implementation(project(":Lab2:controllers"))
     testImplementation(project(mapOf("path" to ":Lab2:services")))
     implementation("org.hibernate:hibernate-gradle-plugin:5.6.15.Final")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
