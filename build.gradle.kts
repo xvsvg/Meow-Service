@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.postgresql:postgresql:42.1.4")
+
 }
 
 tasks.getByName<Test>("test") {
