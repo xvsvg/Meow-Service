@@ -3,40 +3,44 @@ package org.myaukalki.implementations;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.myaukalki.contracts.BaseDao;
-import org.myaukalki.domain.contracts.Owner;
 import org.myaukalki.domain.contracts.Pet;
 import org.myaukalki.domain.implementations.CatImpl;
 import org.myaukalki.factories.HibernateFactory;
 
 import java.util.List;
-import javax.persistence.criteria.Predicate;
 
 public class PetDaoImpl extends BaseDao<Pet> {
     @Override
-    public void save(Pet pet) {
+    public Pet save(Pet pet) {
         Session session = HibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.save(pet);
         transaction.commit();
         session.close();
+
+        return pet;
     }
 
     @Override
-    public void delete(Pet pet) {
+    public Pet delete(Pet pet) {
         Session session = HibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(pet);
         transaction.commit();
         session.close();
+
+        return pet;
     }
 
     @Override
-    public void update(Pet pet) {
+    public Pet update(Pet pet) {
         Session session = HibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.update(pet);
         transaction.commit();
         session.close();
+
+        return pet;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class PetDaoImpl extends BaseDao<Pet> {
 //    }
 
     @Override
-    public List<Pet> findAll(HibernateCriteriaQuary<Pet> predicate) {
+    public List<Pet> findAll(HibernateCriteriaQuery<Pet> predicate) {
         try (Session session = HibernateFactory.getSessionFactory().openSession()) {
 
             return predicate.execute(session.createCriteria(Pet.class));

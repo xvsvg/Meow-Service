@@ -1,42 +1,46 @@
 package org.myaukalki.implementations;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.myaukalki.contracts.BaseDao;
 import org.myaukalki.domain.contracts.Owner;
 
 import java.util.List;
-import javax.persistence.criteria.Predicate;
 
 import org.myaukalki.factories.HibernateFactory;
 
 public class OwnerDaoImpl extends BaseDao<Owner> {
     @Override
-    public void save(Owner owner) {
+    public Owner save(Owner owner) {
         Session session = HibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.save(owner);
         transaction.commit();
         session.close();
+
+        return owner;
     }
 
     @Override
-    public void delete(Owner owner) {
+    public Owner delete(Owner owner) {
         Session session = HibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(owner);
         transaction.commit();
         session.close();
+
+        return owner;
     }
 
     @Override
-    public void update(Owner owner) {
+    public Owner update(Owner owner) {
         Session session = HibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.update(owner);
         transaction.commit();
         session.close();
+
+        return owner;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class OwnerDaoImpl extends BaseDao<Owner> {
 //    }
 
     @Override
-    public List<Owner> findAll(HibernateCriteriaQuary<Owner> predicate) {
+    public List<Owner> findAll(HibernateCriteriaQuery<Owner> predicate) {
         try (Session session = HibernateFactory.getSessionFactory().openSession()) {
 
             return predicate.execute(session.createCriteria(Owner.class));
