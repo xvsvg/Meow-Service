@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "org.myaukalki"
+group = "org.myaukalki.console"
 version = "1.0-SNAPSHOT"
 
 repositories {
