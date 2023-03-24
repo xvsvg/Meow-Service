@@ -6,8 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.List;
 
 @Entity
+@Table(name = "owner")
 public abstract class Owner {
 
     @Id
@@ -16,20 +18,23 @@ public abstract class Owner {
     @Setter
     private Long id;
 
-    @Column(name = "OwnerName", nullable = false)
+    @Column(name = "owner_name", nullable = false)
     @Getter
     @Setter
     private String name;
 
-    @Column(name = "OwnerBirthDate", nullable = false)
+    @Column(name = "owner_birth_date", nullable = false)
     @Getter
     @Setter
     private LocalDate birthDate;
 
-    @OneToMany(targetEntity = Pet.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Pet.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Getter
     @Setter
-    private LinkedList<Pet> pets;
+    @JoinTable(name = "owner_pet",
+            joinColumns = @JoinColumn(name = "owner_id"),
+            inverseJoinColumns = @JoinColumn(name = "pets_id"))
+    private List<Pet> pets;
 
     protected Owner() {
     }

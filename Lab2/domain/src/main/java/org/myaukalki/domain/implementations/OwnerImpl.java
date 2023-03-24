@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Owners")
 public class OwnerImpl extends Owner {
 
     protected OwnerImpl() {}

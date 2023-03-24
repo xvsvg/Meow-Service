@@ -10,26 +10,29 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 @Entity
-@Table(name = "Pets")
 public class CatImpl extends Pet {
 
-    @Column(name = "Color")
+    @Column(name = "color")
     @Enumerated(value = EnumType.STRING)
     @Getter
     @Setter
     private final Color color;
 
-    @Column(name = "Breed")
+    @Column(name = "breed")
     @Getter
     @Setter
     private final String breed;
 
-    @ManyToMany(targetEntity = Pet.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "Pets")
+    @ManyToMany(targetEntity = Pet.class, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @Getter
     @Setter
-    private final LinkedList<Pet> friends;
+    @JoinTable(name = "pet_pet",
+    joinColumns = @JoinColumn(name = "pet_id"),
+    inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private final List<Pet> friends;
 
     protected CatImpl() {
         super();

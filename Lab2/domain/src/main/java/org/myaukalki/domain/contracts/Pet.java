@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "pet")
 public abstract class Pet {
 
     @Id
@@ -16,18 +17,18 @@ public abstract class Pet {
     @Setter
     private Long id;
 
-    @Column(name = "PetName")
+    @Column(name = "pet_name")
     @Getter
     @Setter
     private String name;
 
-    @Column(name = "PetBirthDate")
+    @Column(name = "pet_birth_date")
     @Getter
     @Setter
     private LocalDate birthDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OwnerID")
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
     @Getter
     @Setter
     @Nullable
