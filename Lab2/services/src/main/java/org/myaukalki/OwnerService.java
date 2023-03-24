@@ -2,10 +2,13 @@ package org.myaukalki;
 
 import org.myaukalki.domain.contracts.Owner;
 import org.myaukalki.domain.contracts.Pet;
-import org.myaukalki.implementations.HibernateCriteriaQuary;
+import org.myaukalki.dto.*;
+import org.myaukalki.implementations.HibernateCriteriaQuery;
 import org.myaukalki.implementations.OwnerDaoImpl;
+import org.myaukalki.mapper.CatMapper;
+import org.myaukalki.mapper.OwnerMapper;
 
-import javax.persistence.criteria.Predicate;
+import java.util.LinkedList;
 import java.util.List;
 
 public class OwnerService {
@@ -16,37 +19,75 @@ public class OwnerService {
         this.ownerDao = ownerDao;
     }
 
-    public void save(Owner owner) {
-        ownerDao.save(owner);
+    public OwnerAnswerDto save(OwnerRequestDto dto) {
+
+        return OwnerMapper.mapToDto(
+                ownerDao.save(
+                        OwnerMapper.mapToEntity(dto)));
     }
 
-    public void delete(Owner owner) {
-        ownerDao.delete(owner);
+    public OwnerAnswerDto delete(OwnerRequestDto dto) {
+
+        return OwnerMapper.mapToDto(
+                ownerDao.delete(
+                        OwnerMapper.mapToEntity(dto)));
     }
 
-    public void update(Owner owner) {
-        ownerDao.update(owner);
+    public OwnerAnswerDto update(OwnerRequestDto dto) {
+
+        return OwnerMapper.mapToDto(
+                ownerDao.update(
+                        OwnerMapper.mapToEntity(dto)));
     }
 
-    public Owner find(Long id) {
-        return ownerDao.find(id);
+    public OwnerAnswerDto find(Long id) {
+        return OwnerMapper.mapToDto(ownerDao.find(id));
     }
 
-    public List<Owner> findAll(HibernateCriteriaQuary<Owner> predicate) {
+    public List<Owner> findAll(HibernateCriteriaQuery<Owner> predicate) {
         return ownerDao.findAll(predicate);
     }
 
-    public Pet addPet(Owner target, Pet pet) {
-        pet.setOwner(target);
-        target.getPets().add(pet);
+    public PetAnswerDto addPet(OwnerRequestDto target, PetRequestDto pet) {
+        var targetEntity = OwnerMapper.mapToEntity(target);
+        var petEntity = CatMapper.mapToEntity(pet);
 
-        return pet;
+        petEntity.setOwner(targetEntity);
+
+        LinkedList<Pet> newList = new LinkedList<>(targetEntity.getPets());
+        newList.add(petEntity);
+        targetEntity.setPets(newList);
+
+        ownerDao.update(targetEntity);
+
+        return CatMapper.mapToDto(petEntity);
     }
 
-    public Pet removePet(Owner target, Pet pet) {
-        pet.setOwner(null);
-        target.getPets().remove(pet);
+    public PetAnswerDto removePet(OwnerRequestDto target, PetRequestDto pet) {
+        var targetEntity = OwnerMapper.mapToEntity(target);
+        var petEntity = CatMapper.mapToEntity(pet);
 
-        return pet;
+        petEntity.setOwner(null);
+        targetEntity.getPets().remove(petEntity);
+
+        ownerDao.update(targetEntity);
+
+        return CatMapper.mapToDto(petEntity);
+    }
+
+    public OwnerAnswerDto createOwner(CreateOwnerDto dto) {
+        var entity = OwnerMapper.mapToEntity(dto);
+
+        ownerDao.save(entity);
+
+        return OwnerMapper.mapToDto(entity);
+    }
+
+    public OwnerAnswerDto removeOwner(OwnerRequestDto dto) {
+        var entity = OwnerMapper.mapToEntity(dto);
+
+        ownerDao.delete(entity);
+
+        return OwnerMapper.mapToDto(entity);
     }
 }
