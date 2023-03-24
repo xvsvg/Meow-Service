@@ -4,6 +4,6 @@ import org.hibernate.Criteria;
 
 import java.util.List;
 
-public interface HibernateCriteriaQuary<T> {
+public interface HibernateCriteriaQuery<T> {
     List<T> execute(Criteria criteria);
 }
