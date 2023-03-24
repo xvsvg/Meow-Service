@@ -1,4 +1,5 @@
 rootProject.name = "xvsvg"
+include("Lab1")
 include("Lab2")
 include("Lab2:services")
 findProject(":Lab2:services")?.name = "services"
