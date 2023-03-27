@@ -19,12 +19,12 @@ public class CatImpl extends Pet {
     @Enumerated(value = EnumType.STRING)
     @Getter
     @Setter
-    private final Color color;
+    private Color color;
 
     @Column(name = "breed")
     @Getter
     @Setter
-    private final String breed;
+    private String breed;
 
     @ManyToMany(targetEntity = Pet.class, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @Getter
@@ -32,7 +32,7 @@ public class CatImpl extends Pet {
     @JoinTable(name = "pet_pet",
     joinColumns = @JoinColumn(name = "pet_id"),
     inverseJoinColumns = @JoinColumn(name = "friend_id"))
-    private final List<Pet> friends;
+    private List<Pet> friends;
 
     protected CatImpl() {
         super();
