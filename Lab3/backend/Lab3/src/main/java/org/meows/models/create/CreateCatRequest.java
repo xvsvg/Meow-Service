@@ -1,4 +1,4 @@
-package org.meows.models;
+package org.meows.models.create;
 
 import lombok.Data;
 import org.meows.models.utils.Color;
