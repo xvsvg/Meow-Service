@@ -27,7 +27,6 @@ public class OwnerEntity {
     private LocalDate birthDate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "pets")
     @Getter
     @Setter
     private List<CatEntity> pets = new ArrayList<>();
