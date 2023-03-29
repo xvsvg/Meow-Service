@@ -3,17 +3,18 @@ package org.meows.services;
 import org.meows.entities.CatEntity;
 import org.meows.entities.OwnerEntity;
 import org.meows.exceptions.OwnerServiceException;
-import org.meows.models.CreateOwnerRequest;
+import org.meows.models.create.CreateOwnerRequest;
+import org.meows.models.get.OwnerGetResponse;
+import org.meows.models.page.OwnerPageResponse;
 import org.meows.models.OwnerResponse;
-import org.meows.models.UpdateOwnerRequest;
+import org.meows.models.update.UpdateOwnerRequest;
 import org.meows.repositories.CatEntityRepository;
 import org.meows.repositories.OwnerEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,23 +31,20 @@ public class OwnerService {
     }
 
 
-    public OwnerResponse getById(Long id) throws OwnerServiceException {
+    public OwnerGetResponse getById(Long id) throws OwnerServiceException {
         Optional<OwnerEntity> owner = ownerRepository.findById(id);
 
         if (owner.isEmpty()){
             throw new OwnerServiceException(String.format("Owner with id %s not found", id));
         }
 
-        return OwnerResponse.toModel(owner.get());
+        return OwnerGetResponse.toModel(owner.get());
     }
 
-    public List<OwnerResponse> getAll() {
-        Iterable<OwnerEntity> owners = ownerRepository.findAll();
+    public OwnerPageResponse getAll(Pageable page) {
+        var ownerPage = ownerRepository.findAll(page);
 
-        List<OwnerResponse> ownersList = new ArrayList<OwnerResponse>();
-        owners.forEach(owner -> ownersList.add(OwnerResponse.toModel(owner)));
-
-        return ownersList;
+        return OwnerPageResponse.toModel(ownerPage);
     }
 
     public OwnerResponse create(CreateOwnerRequest request) {
