@@ -1,22 +1,25 @@
 package org.meows.services;
 
 import org.meows.entities.CatEntity;
-import org.meows.entities.FriendEntity;
 import org.meows.entities.OwnerEntity;
 import org.meows.exceptions.CatServiceException;
-import org.meows.models.CatResponse;
-import org.meows.models.CreateCatRequest;
-import org.meows.models.UpdateCatRequest;
+import org.meows.models.*;
+import org.meows.models.create.CreateCatRequest;
+import org.meows.models.filter.CatFilterRequest;
+import org.meows.models.get.CatGetResponse;
+import org.meows.models.page.CatPageResponse;
+import org.meows.models.update.UpdateCatRequest;
 import org.meows.repositories.CatEntityRepository;
-//import org.meows.repositories.FriendEntityRepository;
 import org.meows.repositories.OwnerEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+
+import static org.meows.repositories.CatEntityRepository.anyMatch;
 
 @Service
 public class CatService {
@@ -25,16 +28,11 @@ public class CatService {
 
     private final OwnerEntityRepository ownerRepository;
 
-//    private final FriendEntityRepository friendRepository;
-
     @Autowired
     public CatService(CatEntityRepository catRepository,
-                      OwnerEntityRepository ownerRepository
-//                      FriendEntityRepository friendRepository
-    ) {
+                      OwnerEntityRepository ownerRepository) {
         this.catRepository = catRepository;
         this.ownerRepository = ownerRepository;
-//        this.friendRepository = friendRepository;
     }
 
     public CatResponse create(CreateCatRequest cat) throws CatServiceException {
@@ -58,23 +56,20 @@ public class CatService {
         return CatResponse.toModel(result);
     }
 
-    public CatResponse getById(Long id) throws CatServiceException {
+    public CatGetResponse getById(Long id) throws CatServiceException {
         Optional<CatEntity> cat = catRepository.findById(id);
 
         if (cat.isEmpty()) {
             throw new CatServiceException(String.format("Cat with id %s not found", id));
         }
 
-        return CatResponse.toModel(cat.get());
+        return CatGetResponse.toModel(cat.get());
     }
 
-    public List<CatResponse> getAllCats() {
-        Iterable<CatEntity> cats = catRepository.findAll();
+    public CatPageResponse getAllCats(Pageable page, CatFilterRequest request) {
+        var catPage = catRepository.findAll(anyMatch(request), page);
 
-        List<CatResponse> catResponses = new ArrayList<>();
-        cats.forEach(cat -> catResponses.add(CatResponse.toModel(cat)));
-
-        return catResponses;
+        return CatPageResponse.toModel(catPage);
     }
 
     public CatResponse update(UpdateCatRequest cat) throws CatServiceException {
@@ -145,14 +140,10 @@ public class CatService {
 
         friendList = new ArrayList<>(Arrays.asList(catEntity.get(), friendEntity.get()));
 
-        var friends = new FriendEntity();
-        friends.setFriends(friendList);
-
         catRepository.save(catEntity.get());
         catRepository.save(friendEntity.get());
-//        friendRepository.save(friends);
 
-        return CatResponse.toModel(friendEntity.get());
+        return CatResponse.toModel(catEntity.get());
     }
 
     public CatResponse removeFriend(Long petId, Long friendId) throws CatServiceException {
@@ -176,13 +167,9 @@ public class CatService {
 
         friendList = new ArrayList<>(Arrays.asList(catEntity.get(), friendEntity.get()));
 
-        var friends = new FriendEntity();
-        friends.setFriends(friendList);
-
         catRepository.save(catEntity.get());
         catRepository.save(friendEntity.get());
-//        friendRepository.delete(friends);
 
-        return CatResponse.toModel(friendEntity.get());
+        return CatResponse.toModel(catEntity.get());
     }
 }
