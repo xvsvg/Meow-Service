@@ -46,7 +46,6 @@ public class CatEntity {
     @JoinTable(name = "friends",
             joinColumns = @JoinColumn(name = "cat_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id"))
-    @CollectionTable(name = "friends")
     @Getter
     @Setter
     private List<CatEntity> friends = new ArrayList<>();
