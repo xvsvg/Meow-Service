@@ -1,4 +1,4 @@
-package org.meows.models;
+package org.meows.models.update;
 
 import lombok.Data;
 
