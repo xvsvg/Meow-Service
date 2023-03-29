@@ -22,9 +22,8 @@ public @Data class CatResponse {
 
     private OwnerResponse owner;
 
-    private List<CatResponse> friends = new ArrayList<CatResponse>();
-
-    protected CatResponse() {}
+    public CatResponse() {
+    }
 
     public static CatResponse toModel(CatEntity cat) {
         var response = new CatResponse();
@@ -33,8 +32,7 @@ public @Data class CatResponse {
         response.setBirthDate(cat.getBirthDate());
         response.setBreed(cat.getBreed());
         response.setColor(cat.getColor());
-        response.setOwner(OwnerResponse.toModel(cat.getOwner(), cat.getId()));
-        response.setFriends(cat.getFriends().stream().map(CatResponse::toModel).toList());
+        response.setOwner(OwnerResponse.toModel(cat.getOwner()));
 
         return response;
     }
