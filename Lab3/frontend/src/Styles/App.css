@@ -67,20 +67,20 @@ button.dropdown-toggle.btn.btn-primary {
 	padding: 20px;
 	position: absolute;
 	top: 50%;
-	left:50%;
+	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
-.input-styles{
+.input-styles {
 	width: auto;
 }
 
-.other-input-styles{
+.other-input-styles {
 	width: auto;
 	margin-top: 10px;
 }
 
-.submit-button{
+.submit-button {
 	margin-top: 50px;
 	border: 2px;
 	border-radius: 5px;
@@ -89,7 +89,7 @@ button.dropdown-toggle.btn.btn-primary {
 	font-size: 18px;
 }
 
-.modal-title{
+.modal-title {
 	text-align: center;
 	text-size-adjust: inherit;
 }
@@ -99,17 +99,17 @@ button.dropdown-toggle.btn.btn-primary {
 	flex-direction: row;
 }
 
-.vertical-container{
+.vertical-container {
 	display: flex;
 	flex-direction: column;
 }
 
-.submit-form-container{
+.submit-form-container {
 	display: flex;
 	flex-direction: column;
 }
 
-button.btn-close{
+button.btn-close {
 	position: absolute;
 	margin-left: 535px;
 }
