@@ -15,6 +15,8 @@ Client-Server TS+React+Java Spring application for pet and owner register
 
 <h2>Tech stack</h2>
 
+- Java 17
+
 - Spring boot 3.0.6
 
 - Gradle 7.6.1
