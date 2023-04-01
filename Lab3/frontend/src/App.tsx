@@ -17,13 +17,11 @@ const App: FC = () => {
 	const [showGetModal, getFormStatus, setShowGetModal, setGetFormStatus] = useButton();
 	const [showDeleteModal, deleteFormStatus, setShowDeleteModal, setDeleteFormStatus] = useButton();
 
-	// const [createOption, setCreateOption] = useState('')
-
 	const handleCreateButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setShowCreateModal(event.currentTarget.getAttribute("name") as string)
 		setCreateFormStatus(!createFormStatus)
 	}
-	
+
 	const handleUpdateButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setShowUpdateModal(event.currentTarget.getAttribute("name") as string)
 		setUpdateFormStatus(!updateFormStatus)
@@ -65,8 +63,8 @@ const App: FC = () => {
 			/>}
 
 			{getFormStatus && <Modal
-			option={"Search for " + showGetModal}
-			onClose={() => setGetFormStatus(!getFormStatus)} />}
+				option={"Search for " + showGetModal}
+				onClose={() => setGetFormStatus(!getFormStatus)} />}
 
 			{deleteFormStatus && <Modal
 				option={"Unregister " + showDeleteModal}
