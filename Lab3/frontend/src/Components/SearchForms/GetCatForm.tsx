@@ -2,6 +2,7 @@ import { getCat } from "../../Api/Api";
 import { useState } from "react";
 import { CatTable } from "../Tables/CatTable";
 import { IOwner } from "./GetOwnerForm";
+import { Loader } from "../Loaders/Loader";
 
 export interface ICat {
 	id: number,
@@ -17,14 +18,19 @@ export function GetCatForm() {
 	const [cats, setCats] = useState<ICat[]>([])
 	const [entered, setEntered] = useState(false)
 	const [id, setId] = useState(1)
+	const [isLoading, setLoading] = useState(false)
 
 	const fetchCat = async () => {
 		try {
+			setLoading(true)
 			const { data } = await getCat(id);
 			setCats([data])
 		}
 		catch (error) {
 			console.log("error fetching cats " + error)
+		}
+		finally {
+			setLoading(false)
 		}
 	}
 
@@ -40,6 +46,7 @@ export function GetCatForm() {
 
 	return (
 		<>
+			{isLoading && <Loader />}
 
 			{!entered && <form onSubmit={submitHandler}>
 				<div className="submit-form-container">
@@ -57,7 +64,7 @@ export function GetCatForm() {
 
 			</form>}
 
-			{entered && <CatTable cats={cats} />}
+			{!isLoading && entered && <CatTable cats={cats} />}
 		</>
 	)
 }

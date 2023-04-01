@@ -2,16 +2,27 @@ import { useState } from "react";
 import { IOwner } from "../SearchForms/GetOwnerForm";
 import { deleteOwner } from "../../Api/Api";
 import { OwnerTable } from "../Tables/OwnerTable";
+import { Loader } from "../Loaders/Loader";
 
 export function DeleteOwnerForm() {
 
 	const [id, setId] = useState(0)
 	const [submited, setSubmited] = useState(false)
 	const [owner, setOwner] = useState<IOwner>({ id: 0, name: '', birthDate: '' })
+	const [isLoading, setLoading] = useState(false)
 
 	const sendOwnerData = async () => {
-		const { data } = await deleteOwner(id)
-		setOwner(data)
+		try {
+			setLoading(true)
+			const { data } = await deleteOwner(id)
+			setOwner(data)
+		}
+		catch (error) {
+			console.log("error during sending data" + error);
+		}
+		finally {
+			setLoading(false)
+		}
 	}
 
 	const submitHandler = async (event: React.FormEvent) => {
@@ -26,6 +37,8 @@ export function DeleteOwnerForm() {
 
 	return (
 		<>
+			{isLoading && <Loader />}
+
 			{!submited &&
 				<form onSubmit={submitHandler}>
 					<div className="submit-form-container">
@@ -42,7 +55,7 @@ export function DeleteOwnerForm() {
 
 				</form>}
 
-			{submited && <OwnerTable users={[owner]} />}
+			{!isLoading && submited && <OwnerTable users={[owner]} />}
 		</>
 	)
 }

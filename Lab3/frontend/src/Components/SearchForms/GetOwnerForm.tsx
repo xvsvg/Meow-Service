@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getOwner } from "../../Api/Api";
 import { OwnerTable } from "../Tables/OwnerTable";
+import { Loader } from "../Loaders/Loader";
 
 export interface IOwner {
 	id: number;
@@ -13,14 +14,19 @@ export function GetOwnerForm() {
 	const [users, setUsers] = useState<IOwner[]>([])
 	const [entered, setEntered] = useState(false)
 	const [id, setId] = useState(1)
+	const [isLoading, setLoading] = useState(false)
 
 	const fetchOwner = async () => {
 		try {
-			const {data} = await getOwner(id);
+			setLoading(true)
+			const { data } = await getOwner(id);
 			setUsers([data])
 		}
 		catch (error) {
 			console.log("error fetching users " + error)
+		}
+		finally {
+			setLoading(false)
 		}
 	}
 
@@ -36,6 +42,7 @@ export function GetOwnerForm() {
 
 	return (
 		<>
+			{isLoading && <Loader />}
 
 			{!entered && <form onSubmit={submitHandler}>
 				<div className="submit-form-container">
@@ -53,7 +60,7 @@ export function GetOwnerForm() {
 
 			</form>}
 
-			{entered && <OwnerTable users={users} />}
+			{!isLoading && entered && <OwnerTable users={users} />}
 		</>
 	);
 }

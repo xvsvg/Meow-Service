@@ -3,6 +3,7 @@ import { createOwner } from "../../Api/Api";
 import { CreateOwnerDTO } from "../../Api/Dto/CreateOwnerDTO";
 import { OwnerTable } from "../Tables/OwnerTable";
 import { IOwner } from "../SearchForms/GetOwnerForm";
+import { Loader } from "../Loaders/Loader";
 
 export function CreateOwnerForm() {
 
@@ -10,11 +11,21 @@ export function CreateOwnerForm() {
 	const [date, setDate] = useState('')
 	const [submited, setSubmited] = useState(false)
 	const [owner, setOwner] = useState<IOwner>({ id: 0, name: '', birthDate: '' })
+	const [isLoading, setLoading] = useState(false)
 
 	const sendOwnerData = async () => {
-		const owner: CreateOwnerDTO = { name: name, birthDate: date }
-		const { data } = await createOwner(owner)
-		setOwner(data)
+		try {
+			setLoading(true)
+			const owner: CreateOwnerDTO = { name: name, birthDate: date }
+			const { data } = await createOwner(owner)
+			setOwner(data)
+		}
+		catch (error) {
+			console.log("error during sending data " + error);
+		}
+		finally {
+			setLoading(false)
+		}
 	}
 
 	const submitHandler = async (event: React.FormEvent) => {
@@ -34,6 +45,8 @@ export function CreateOwnerForm() {
 
 	return (
 		<>
+			{isLoading && <Loader />}
+
 			{!submited && <form onSubmit={submitHandler}>
 				<div className="submit-form-container">
 					<input
@@ -55,7 +68,7 @@ export function CreateOwnerForm() {
 				</div>
 			</form>}
 
-			{submited && <OwnerTable users={[owner]} />}
+			{!isLoading && submited && <OwnerTable users={[owner]} />}
 		</>
 	)
 }

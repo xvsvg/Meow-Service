@@ -2,16 +2,27 @@ import { useState } from "react"
 import { ICat } from "../SearchForms/GetCatForm";
 import { deleteCat } from "../../Api/Api";
 import { CatTable } from "../Tables/CatTable";
+import { Loader } from "../Loaders/Loader";
 
 export function DeleteCatForm() {
 
 	const [id, setId] = useState(0)
 	const [submited, setSubmited] = useState(false)
 	const [cat, setCat] = useState<ICat>({ id: 0, name: '', birthDate: '', color: '', breed: '', owner: { id: 0, name: '', birthDate: '' } })
+	const [isLoading, setLoading] = useState(false)
 
 	const sendCatData = async () => {
-		const { data } = await deleteCat(id)
-		setCat(data)
+		try {
+			setLoading(true)
+			const { data } = await deleteCat(id)
+			setCat(data)
+		}
+		catch (error) {
+			console.log("error during sending request" + error);
+		}
+		finally {
+			setLoading(false)
+		}
 	}
 
 	const submitHandler = async (event: React.FormEvent) => {
@@ -26,6 +37,7 @@ export function DeleteCatForm() {
 
 	return (
 		<>
+			{isLoading && <Loader />}
 			{!submited &&
 				<form onSubmit={submitHandler}>
 					<div className="submit-form-container">
@@ -42,7 +54,7 @@ export function DeleteCatForm() {
 
 				</form>}
 
-			{submited && <CatTable cats={[cat]} />}
+			{!isLoading && submited && <CatTable cats={[cat]} />}
 		</>
 	)
 }

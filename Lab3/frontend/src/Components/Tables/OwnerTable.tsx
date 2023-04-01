@@ -1,5 +1,6 @@
 import { Table } from "react-bootstrap";
 import { IOwner } from "../SearchForms/GetOwnerForm";
+import { Loader } from "../Loaders/Loader";
 
 interface OwnerTableProps {
 	users: IOwner[]

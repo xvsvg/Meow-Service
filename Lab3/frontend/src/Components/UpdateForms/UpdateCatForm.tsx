@@ -3,6 +3,7 @@ import { UpdateCatDTO } from "../../Api/Dto/UpdateCatDTO"
 import { updateCat } from "../../Api/Api"
 import { ICat } from "../SearchForms/GetCatForm"
 import { CatTable } from "../Tables/CatTable"
+import { Loader } from "../Loaders/Loader"
 
 export function UpdateCatForm() {
 
@@ -14,17 +15,27 @@ export function UpdateCatForm() {
 	const [ownerId, setOwnerId] = useState(0)
 	const [submited, setSubmited] = useState(false)
 	const [cat, setCat] = useState<ICat>({ id: 0, name: '', birthDate: '', color: '', breed: '', owner: { id: 0, birthDate: '', name: '' } })
+	const [isLoading, setLoading] = useState(false)
 
 	const sendCatDate = async () => {
-		const cat: UpdateCatDTO = { id: catId, name: name, birthDate: date, color: color, breed: breed, ownerId: ownerId }
-		const { data } = await updateCat(cat)
-		setCat(data)
+		try {
+			setLoading(true)
+			const cat: UpdateCatDTO = { id: catId, name: name, birthDate: date, color: color, breed: breed, ownerId: ownerId }
+			const { data } = await updateCat(cat)
+			setCat(data)
+		}
+		catch (error) {
+			console.log("error during sending the request " + error);
+		}
+		finally {
+			setLoading(false)
+		}
 	}
 
-	const submitHandler = (event: React.FormEvent) => {
+	const submitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setSubmited(!submited)
-		sendCatDate()
+		await sendCatDate()
 	}
 
 	const catIdChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +64,8 @@ export function UpdateCatForm() {
 
 	return (
 		<>
+			{isLoading && <Loader />}
+
 			{!submited &&
 				<form onSubmit={submitHandler}>
 					<div className='submit-form-container'>
@@ -110,7 +123,7 @@ export function UpdateCatForm() {
 					</div>
 				</form>}
 
-			{submited && <CatTable cats={[cat]} />}
+			{!isLoading && submited && <CatTable cats={[cat]} />}
 		</>
 	)
 }
