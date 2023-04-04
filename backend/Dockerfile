@@ -1,10 +1,13 @@
-FROM openjdk:17-jdk-slim
+FROM gradle as build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
-COPY --chown=root . /backend
 
-WORKDIR /backend
+FROM eclipse-temurin:17-jdk-alpine
 
-USER root
-RUN chmod +x gradlew
+RUN mkdir /app
 
-CMD ["./gradlew", "bootRun"]
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/meow-service-application.jar
+
+ENTRYPOINT ["java","-jar", "/app/meow-service-application.jar"]
