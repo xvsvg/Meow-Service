@@ -1,5 +1,5 @@
 # Meow-Service
-Client-Server TS+React+Java Spring application for pet and owner register
+Client-Server Rest Api TS+React+Java Spring application for pet and owner register
 
 <h2>Startup</h2>
 
