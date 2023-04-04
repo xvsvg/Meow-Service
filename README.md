@@ -5,7 +5,7 @@ Client-Server TS+React+Java Spring application for pet and owner register
 
 1. `git clone https://github.com/xvsvg/Meow-Service.git`
 
-2. `docker compose up -d --build`
+2. `docker compose up -d`
 
 3. Application starts on a **localhost:3000**, check if all containers are up
 
